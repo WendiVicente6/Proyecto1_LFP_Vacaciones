@@ -67,22 +67,49 @@ for automata in lista_automatas:
 
 estado=0
 tran=0
+destino=0
+origenes=[]
 cadena=input("Ingrese cadena: ")
 for caracter in cadena:
 
     if(caracter in alfabeto):
-        if caracter in transiciones_[tran]:
-                if transiciones_[tran][0] in estado_inicial:
-                    destino=transiciones_[tran][4]
-                    print("Caracter: "+caracter+" pasa por estado inicial "+estado_inicial+" y va a "+destino)
+            if estado==0:
+            #if transiciones_[tran][0] in estado_inicial: #["A,0,B", "A,1,B", "A,1,C"]
+                if caracter in transiciones_[tran]:                    
+                    print("Caracter: "+caracter+" pasa por estado inicial "+estado_inicial+" y va a "+transiciones_[tran][4])
+                    estado=+1
+                    origenes.insert(0,tran)
+                    tran=0
                     if transiciones_[tran][0] in estados_aceptacion_:
                         print("     tambien es acepetado")
-                    continue
-        while caracter not in transiciones_[tran]:
-            tran+=1
-        print("Caracter: "+caracter+" pasa por estado "+transiciones_[tran][0]+" y va a "+(transiciones_[tran][4]))
-        tran=0
-            
+                    continue   
+                else:
+                    while caracter not in transiciones_[tran]:
+                        tran+=1
+                    print("Caracter: "+caracter+" pasa por estado inicial "+estado_inicial+" y va a "+transiciones_[tran][4])
+                    estado=+1
+                    origenes.insert(0,tran)
+                    
+                    if transiciones_[tran][0] in estados_aceptacion_:
+                        print("     tambien es acepetado")
+                    tran=0
+                    continue  
+            elif estado!=0:
+                while transiciones_[origenes[0]][4]!=transiciones_[tran][0] or not caracter in transiciones_[tran]:
+                    tran+=1
+                if caracter in transiciones_[tran]:
+                    destino=transiciones_[tran][4]
+                    print("Caracter: "+caracter+" pasa por estado "+transiciones_[tran][0]+" y va a "+transiciones_[tran][4])
+                    origenes.insert(0,tran)
+                    tran=0
+            else:
+                print("No puede ser aceptado")
+                break
+    
+            '''while caracter not in transiciones_[tran]:
+                tran+=1
+            print("Caracter: "+caracter+" pasa por estado "+transiciones_[tran][0]+" y va a "+(transiciones_[tran][4]))
+            tran=0    '''       
 
 
         
