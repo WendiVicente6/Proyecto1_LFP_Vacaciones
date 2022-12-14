@@ -10,7 +10,15 @@ class Automata():
     def retornar(self):
         return self.nombre,self.estados,self.alfabeto,self.estado_inicial,self.estados_aceptacion,self.transiciones
             
-
+class Transicion:
+    def __init__(self, origen, entrada, destino):
+        self.origen = origen
+        self.entrada = entrada
+        self.destino = destino
+    
+    def retor(self):
+        return self.origen,self.entrada,self.destino
+        
 class Node():
     def __init__ (self,dato=None,sig=None):
         self.dato=dato
@@ -19,8 +27,6 @@ class Node():
 class Listar():
     def __init__(self):
         self.head=None
-    def AgregarInicio(self,dato):
-        self.head=Node(dato=dato,sig=self.head)
 
     def AgregarFinal(self,dato):
         if not self.head:
@@ -56,11 +62,3 @@ class Listar():
             tmp=tmp.sig
         return tmp2
 
-class Transicion:
-    def __init__(self, origen, entrada, destino):
-        self.origen = origen
-        self.entrada = entrada
-        self.destino = destino
-    
-    def retor(self):
-        return self.origen,self.entrada,self.destino

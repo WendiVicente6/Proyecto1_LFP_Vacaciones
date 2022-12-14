@@ -3,59 +3,56 @@ from GR import *
 from tkinter import END, Frame, Label, Menu, Scrollbar, Tk, filedialog, messagebox,Text, ttk
 from graphviz import Digraph
 
-Lista_Automata=Listar()
+Lista_Automata=ListarGR()
 
-estados_ = ""
-alfabeto_ = ""
-estados_aceptacion_ =""
-transiciones_ =""
-alfabeto=""
-estado_inicial=""
 
-def AFD(nombre,estados,alfa,estado_ini,estados_aceptacion,transiciones):
+
+def GR(nombre,NoTer,Termi,Ntinicial,produ):
     lista_automatas = [] 
-    alfabeto=alfa
-    estado_inicial=estado_ini
+    lista_aceptacion=[]
     
 
-    estados_ = estados.split(",") 
-    alfabeto_ = alfabeto.split(",")
-    estados_aceptacion_ = estados_aceptacion.split(",")
-    transiciones_ = transiciones.split(";") 
+    NoTerminales = NoTer.split(";") 
+    Terminales = Termi.split(";")
+    producciones = produ.split(";") 
 
-    if(not estado_inicial in estados_ and not estados_aceptacion_ in estados_):
+    if(not Ntinicial in NoTerminales):
         messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
     
     else:
 
-        for estado in estados:
-            if(estado in alfabeto_):
+        for estado in NoTer:
+            if(estado in Terminales):
                 print("El alfabeto no puede ser parte de los estados")
                 break
         
         # creacion de transiciones por separado
         transiciones__ = []
-        for t in transiciones_:
-            t = t.split(",")
-            if(not t[0] in estados_ or not t[2] in estados_):
+        for t in producciones:
+            t = t.split(">")
+            if len(t[1])==1:
+                lista_aceptacion.append(t[0])
+                continue
+
+            if(not t[0] in NoTerminales or not t[1][1] in NoTerminales):
                 print("El origen o el destino de una transicion no esta en el conjunto de estados")
                 break
-            Clase_Transiciones=Transicion(t[0], t[1], t[2])
-            transiciones__.append(Clase_Transiciones.retor())
+            Clase_Transiciones=Produccion(t[0], t[1][0], t[1][1])
+            transiciones__.append(Clase_Transiciones.retorGR())
 
-        Clase_automata = Automata(nombre, estados_, alfabeto_, estado_inicial, estados_aceptacion_, transiciones__)
-        automata=Clase_automata.retornar()
-        Lista_Automata.AgregarFinal(automata)
+        Clase_automata = Gramatica(nombre, NoTerminales, Terminales, Ntinicial,lista_aceptacion, transiciones__)
+        automata=Clase_automata.retornarGR()
+        Lista_Automata.AgregarFinalGR(automata)
         lista_automatas.append(automata)
         
-        print("Automatas ingresados: ")
+        print("Gramaticas Ingresados ingresados: ")
         for automata in lista_automatas:
             print(automata)
 
 
         
-def Cadena(cadena,seleccion):
-    Automata=Lista_Automata.Operar(seleccion)
+def CadenaGR(cadena,seleccion):
+    Automata=Lista_Automata.OperarGR(seleccion)
     estado=0
     tran=0
     origenes=[]
@@ -111,8 +108,8 @@ def Cadena(cadena,seleccion):
                     print("No puede ser aceptado")
                     break
         
-def CadenaRuta(cadena,seleccion):
-    Automata=Lista_Automata.Operar(seleccion)
+def CadenaRutaGR(cadena,seleccion):
+    Automata=Lista_Automata.OperarGR(seleccion)
     estado=0
     tran=0
     Ruta=[]
@@ -176,8 +173,8 @@ def CadenaRuta(cadena,seleccion):
                 else:
                     print("No puede ser aceptado")
                     break
-def GrafoAFD(seleccion):
-    Automata=Lista_Automata.Operar(seleccion)
+def GrafoGR(seleccion):
+    Automata=Lista_Automata.OperarGR(seleccion)
     dot=Digraph(name="Gramatica",encoding='UTF-8',format='pdf',filename='Gramaticas')
     dot.attr(rankdir='LR',layout='dot',shape='circle')
     for ea in Automata[1]:
@@ -195,13 +192,3 @@ def GrafoAFD(seleccion):
     dot.node(str(Automata),shape='box')
     dot.render(Automata[0],format='pdf',view=True)
 
-
-
-        
-        
-        
-
-
-
-
-    

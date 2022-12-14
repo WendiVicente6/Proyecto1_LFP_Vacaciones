@@ -1,0 +1,18 @@
+digraph Gramatica {
+	layout=dot rankdir=LR shape=circle
+	A [shape=circle]
+	B [shape=circle]
+	C [shape=doublecircle]
+	D [shape=circle]
+	Inicio [shape=plaintext]
+	Inicio -> A
+	A -> B [label=0]
+	A -> C [label=1]
+	B -> A [label=0]
+	B -> D [label=1]
+	C -> D [label=0]
+	C -> A [label=1]
+	D -> C [label=0]
+	D -> B [label=1]
+	"('GR_1', ['A', 'B', 'C', 'D'], ['0', '1'], 'A', ['C'], [('A', '0', 'B'), ('A', '1', 'C'), ('B', '0', 'A'), ('B', '1', 'D'), ('C', '0', 'D'), ('C', '1', 'A'), ('D', '0', 'C'), ('D', '1', 'B')])" [shape=box]
+}
