@@ -7,8 +7,9 @@ class Automata():
         self.estados_aceptacion = estados_aceptacion
         self.transiciones = transiciones # origen, valor y destino
     
-    def __str__(self):
-        return f"Nombre: {self.nombre}\nEstados: {self.estados}\nAlfabeto: {self.alfabeto}\nEstado inicial: {self.estado_inicial}\nEstados de aceptacion: {self.estados_aceptacion}\nTransiciones: {self.transiciones}"
+    def retornar(self):
+        return self.nombre,self.estados,self.alfabeto,self.estado_inicial,self.estados_aceptacion,self.transiciones
+            
 
 class Node():
     def __init__ (self,dato=None,sig=None):
@@ -39,6 +40,21 @@ class Listar():
                 tmp2=tmp.dato
             tmp=tmp.sig
         return tmp2
+    def Mostrar(self):
+        tmp=self.head
+        tmp2=[]
+        while tmp is not None:
+            tmp2.append(tmp.dato[0])
+            tmp=tmp.sig
+        return tmp2
+    
+    def Operar(self,nombre):
+        tmp=self.head
+        while tmp is not None:
+            if tmp.dato[0]==nombre:
+                tmp2=tmp.dato
+            tmp=tmp.sig
+        return tmp2
 
 class Transicion:
     def __init__(self, origen, entrada, destino):
@@ -46,7 +62,5 @@ class Transicion:
         self.entrada = entrada
         self.destino = destino
     
-    def __str__(self):
-        return f"({self.origen}, {self.entrada}; {self.destino})"
-    def __repr__(self):
-        return str(self.__dict__)
+    def retor(self):
+        return self.origen,self.entrada,self.destino
