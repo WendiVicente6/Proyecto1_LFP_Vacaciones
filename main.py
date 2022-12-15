@@ -52,7 +52,45 @@ def AFD(nombre,estados,alfa,estado_ini,estados_aceptacion,transiciones):
         for automata in lista_automatas:
             print(automata)
 
+def AFDArchivo(nombre,estados,alfa,estado_ini,estados_aceptacion,transiciones):
+    lista_automatas = [] 
+    alfabeto=alfa
+    estado_inicial=estado_ini
+    
 
+    estados_ = estados.split(",") 
+    alfabeto_ = alfabeto.split(",")
+    estados_aceptacion_ = estados_aceptacion.split(",")
+    transiciones_ = transiciones.split(";") 
+
+    if(not estado_inicial in estados_ and not estados_aceptacion_ in estados_):
+        messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
+    
+    else:
+
+        for estado in estados:
+            if(estado in alfabeto_):
+                messagebox.showinfo("Advertencia"+"El alfabeto no puede ser parte de los estados")
+                break
+        
+        # creacion de transiciones por separado
+        transiciones__ = []
+        for t in transiciones_:
+            t = t.split(",")
+            if(not t[0] in estados_ or not t[2] in estados_):
+                messagebox.showinfo("Advertencia","El origen o el destino de una transicion no esta en el conjunto de estados")
+                break
+            Clase_Transiciones=Transicion(t[0], t[1], t[2])
+            transiciones__.append(Clase_Transiciones.retor())
+
+        Clase_automata = Automata(nombre, estados_, alfabeto_, estado_inicial, estados_aceptacion_, transiciones__)
+        automata=Clase_automata.retornar()
+        Lista_Automata.AgregarFinal(automata)
+        lista_automatas.append(automata)
+        
+        print("Automatas ingresados: ")
+        for automata in lista_automatas:
+            print(automata)
         
 def Cadena(cadena,seleccion):
     Automata=Lista_Automata.Operar(seleccion)
@@ -110,7 +148,8 @@ def Cadena(cadena,seleccion):
                 else:
                     print("No puede ser aceptado")
                     break
-        
+        else:
+            messagebox.showinfo("Información","Revisar entrada... un caracter no pertenece al alfabeto")
 def CadenaRuta(cadena,seleccion):
     Automata=Lista_Automata.Operar(seleccion)
     estado=0
@@ -188,13 +227,18 @@ def GrafoAFD(seleccion):
     dot.node('Inicio',shape='plaintext')
 
     dot.edge('Inicio',''+Automata[3])
-
+    Tran=""
     for es in Automata[5]:
         dot.edge(''+es[0],''+es[2],label=es[1])
+        Tran=Tran+"\n"+es[0]+","+es[1]+";"+es[2]
 
-    dot.node(str(Automata),shape='box')
+
+    Datos="Nombre: "+Automata[0]+"\n"+"Estados: "+",".join(Automata[1])+"\n"+"Alfabeto: "+",".join(Automata[2])+"\n"+"Estado Inicial: "+Automata[3]+"\n"+"Estados de aceptación: "+",".join(Automata[4])+"\n"+"Transiciones:"+Tran
+
+    dot.node(Datos,shape='box')
     dot.render(Automata[0],format='pdf',view=True)
 
+    
 
 
         

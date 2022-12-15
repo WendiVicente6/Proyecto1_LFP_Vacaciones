@@ -2,8 +2,8 @@ digraph Gramatica {
 	layout=dot rankdir=LR shape=circle
 	A [shape=circle]
 	B [shape=circle]
-	C [shape=doublecircle]
-	D [shape=circle]
+	C [shape=circle]
+	D [shape=doublecircle]
 	Inicio [shape=plaintext]
 	Inicio -> A
 	A -> B [label=0]
@@ -12,9 +12,7 @@ digraph Gramatica {
 	B -> D [label=1]
 	C -> D [label=0]
 	C -> A [label=1]
-	D -> C [label=0]
-	D -> B [label=1]
-	"Nombre: GR_1
+	"Nombre: GR_3
 No terminales: A,B,C,D
 Terminales: 0,1
 No terminal Inicial: A
@@ -25,7 +23,5 @@ B>0A
 | 1D
 C>0D
 | 1A
-| $
-D>0C
-| 1B" [shape=box]
+D>$" [shape=box]
 }

@@ -3,7 +3,7 @@ from GR import *
 from tkinter import END, Frame, Label, Menu, Scrollbar, Tk, filedialog, messagebox,Text, ttk
 from graphviz import Digraph
 
-Lista_Automata=ListarGR()
+Lista_AutomataGR=ListarGR()
 
 
 
@@ -23,7 +23,7 @@ def GR(nombre,NoTer,Termi,Ntinicial,produ):
 
         for estado in NoTer:
             if(estado in Terminales):
-                print("El alfabeto no puede ser parte de los estados")
+                messagebox.showinfo("Advertencia!","El alfabeto no puede ser parte de los estados")
                 break
         
         # creacion de transiciones por separado
@@ -32,27 +32,71 @@ def GR(nombre,NoTer,Termi,Ntinicial,produ):
             t = t.split(">")
             if len(t[1])==1:
                 lista_aceptacion.append(t[0])
+                Clase_Transiciones=Produccion(t[0], t[1],"")
+                transiciones__.append(Clase_Transiciones.retorGR())
                 continue
 
             if(not t[0] in NoTerminales or not t[1][1] in NoTerminales):
-                print("El origen o el destino de una transicion no esta en el conjunto de estados")
+                messagebox.showinfo("Advertencia","El origen o el destino de una transicion no esta en el conjunto de estados")
                 break
             Clase_Transiciones=Produccion(t[0], t[1][0], t[1][1])
             transiciones__.append(Clase_Transiciones.retorGR())
 
         Clase_automata = Gramatica(nombre, NoTerminales, Terminales, Ntinicial,lista_aceptacion, transiciones__)
         automata=Clase_automata.retornarGR()
-        Lista_Automata.AgregarFinalGR(automata)
+        Lista_AutomataGR.AgregarFinalGR(automata)
         lista_automatas.append(automata)
         
         print("Gramaticas Ingresados ingresados: ")
         for automata in lista_automatas:
             print(automata)
 
+def GR_Archivo(nombre,NoTer,Termi,Ntinicial,produ):
+    lista_automatas = [] 
+    lista_aceptacion=[]
+    
 
+    NoTerminales = NoTer.split(",") 
+    Terminales = Termi.split(",")
+    producciones = produ.split(";") 
+
+    if(not Ntinicial in NoTerminales):
+        messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
+    
+    else:
+
+        for estado in NoTer:
+            if(estado in Terminales):
+                messagebox.showinfo("Advertencia!","El alfabeto no puede ser parte de los estados")
+                break
+        
+        # creacion de transiciones por separado
+        transiciones__ = []
+        for t in producciones:
+            t = t.split(">")
+            if len(t[1])==1:
+                lista_aceptacion.append(t[0])
+                Clase_Transiciones=Produccion(t[0], t[1],"")
+                transiciones__.append(Clase_Transiciones.retorGR())
+                continue
+
+            if(not t[0] in NoTerminales or not t[1][1] in NoTerminales):
+                messagebox.showinfo("Advertencia","El origen o el destino de una transicion no esta en el conjunto de estados")
+                break
+            Clase_Transiciones=Produccion(t[0], t[1][0], t[1][1])
+            transiciones__.append(Clase_Transiciones.retorGR())
+
+        Clase_automata = Gramatica(nombre, NoTerminales, Terminales, Ntinicial,lista_aceptacion, transiciones__)
+        automata=Clase_automata.retornarGR()
+        Lista_AutomataGR.AgregarFinalGR(automata)
+        lista_automatas.append(automata)
+        
+        print("Gramaticas Ingresados ingresados: ")
+        for automata in lista_automatas:
+            print(automata)
         
 def CadenaGR(cadena,seleccion):
-    Automata=Lista_Automata.OperarGR(seleccion)
+    Automata=Lista_AutomataGR.OperarGR(seleccion)
     estado=0
     tran=0
     origenes=[]
@@ -109,7 +153,7 @@ def CadenaGR(cadena,seleccion):
                     break
         
 def CadenaRutaGR(cadena,seleccion):
-    Automata=Lista_Automata.OperarGR(seleccion)
+    Automata=Lista_AutomataGR.OperarGR(seleccion)
     estado=0
     tran=0
     Ruta=[]
@@ -174,7 +218,7 @@ def CadenaRutaGR(cadena,seleccion):
                     print("No puede ser aceptado")
                     break
 def GrafoGR(seleccion):
-    Automata=Lista_Automata.OperarGR(seleccion)
+    Automata=Lista_AutomataGR.OperarGR(seleccion)
     dot=Digraph(name="Gramatica",encoding='UTF-8',format='pdf',filename='Gramaticas')
     dot.attr(rankdir='LR',layout='dot',shape='circle')
     for ea in Automata[1]:
@@ -185,10 +229,23 @@ def GrafoGR(seleccion):
     dot.node('Inicio',shape='plaintext')
 
     dot.edge('Inicio',''+Automata[3])
-
+    Tran=""
+    Dato=""
     for es in Automata[5]:
-        dot.edge(''+es[0],''+es[2],label=es[1])
+        if es[1]=="$":
+            continue
+        else:
+            dot.edge(''+es[0],''+es[2],label=es[1])
 
-    dot.node(str(Automata),shape='box')
+    for ess in Automata[5]:
+        if ess[0]==Dato:
+            Tran=Tran+"\n"+"| "+ess[1]+ess[2]
+        else:
+            Tran=Tran+"\n"+ess[0]+">"+ess[1]+ess[2]
+        Dato=ess[0]
+        
+
+    Datos="Nombre: "+Automata[0]+"\n"+"No terminales: "+",".join(Automata[1])+"\n"+"Terminales: "+",".join(Automata[2])+"\n"+"No terminal Inicial: "+Automata[3]+"\n"+"Producciones:"+Tran
+    dot.node(Datos,shape='box')
     dot.render(Automata[0],format='pdf',view=True)
 

@@ -13,8 +13,8 @@ digraph Gramatica {
 	C -> D [label=0]
 	C -> A [label=1]
 	D -> C [label=0]
-	D -> B [label=1]
-	"Nombre: GR_1
+	D -> A [label=1]
+	"Nombre: AFD_2
 No terminales: A,B,C,D
 Terminales: 0,1
 No terminal Inicial: A
@@ -27,5 +27,5 @@ C>0D
 | 1A
 | $
 D>0C
-| 1B" [shape=box]
+| 1A" [shape=box]
 }

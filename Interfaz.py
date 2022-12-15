@@ -171,7 +171,7 @@ class VentanaGR(Toplevel):
 
 
 class VentanaGR_Cadena(Toplevel):
-    Lista_Automata=Listar()
+    Lista_AutomataGR=ListarGR()
     def __init__(self,master=None):
         super().__init__(master=master)
         
@@ -190,7 +190,7 @@ class VentanaGR_Cadena(Toplevel):
         disponible.grid(row=5,column=1)
         
 
-        combo = ttk.Combobox(Frame_AFD2,state="readonly",values=Lista_Automata.MostrarGR())
+        combo = ttk.Combobox(Frame_AFD2,state="readonly",values=Lista_AutomataGR.MostrarGR())
         combo.grid(row=6,column=2)
 
         Lbcadena=Label(Frame_AFD2,text="Ingrese Cadena: ")
@@ -207,7 +207,7 @@ class VentanaGR_Cadena(Toplevel):
         Boton_AFD.grid(row=10,column=2) 
 
 class VentanaGR_Reporte(Toplevel):
-    Lista_Automata=Listar()
+    Lista_AutomataGR=ListarGR()
     def __init__(self,master=None):
         super().__init__(master=master)
         
@@ -220,11 +220,125 @@ class VentanaGR_Reporte(Toplevel):
         Frame_AFD2=Frame(self)
         Frame_AFD2.pack()   
 
-        combo = ttk.Combobox(Frame_AFD2,state="readonly",values=Lista_Automata.MostrarGR())
+        combo = ttk.Combobox(Frame_AFD2,state="readonly",values=Lista_AutomataGR.MostrarGR())
         combo.grid(row=6,column=2)
 
         Boton_AFD=Button(Frame_AFD2,text="Generar Reporte",command=lambda:GrafoGR(combo.get()))
         Boton_AFD.grid(row=10,column=2)
+
+#--------------------CARGAS MASIVAS-------------------------------------------------
+
+class VentanaArchivoAFD(Toplevel):
+    Lista_Automata=Listar()
+    def __init__(self,master=None):
+        super().__init__(master=master)
+        
+        self.title("CARGAR ARCHIVO AFD")
+        self.geometry("500x500")
+        inicio=Label(self,text="CARGAR ARCHIVO AFD")
+        inicio.pack()
+        Frame_AFD2=Frame(self)
+        Frame_AFD2.pack()  
+
+        Boton_Cargar_AFD=Button(Frame_AFD2,text="Buscar Archivo",command=lambda:self.AbrirArchivo())
+        Boton_Cargar_AFD.pack()
+        self.label_file_explorer = Label(Frame_AFD2, text = "File Explorer using Tkinter", width = 100, height = 4, fg = "blue") 
+        self.label_file_explorer.pack() 
+
+    def AbrirArchivo(self):
+        
+        filename = filedialog.askopenfilename(initialdir = "/", 
+                                          title = "Select a File", 
+                                          filetypes = (("Text files", 
+                                                        "*.afd*"), 
+                                                       ("all files", 
+                                                        "*.*"))) 
+        self.label_file_explorer.configure(text="File Opened:\n "+filename) 
+        Datos=[]
+        with open(filename) as archivo:
+            No_Linea=0
+            Transi=""
+            for linea in archivo:
+                No_Linea+=1
+                
+                if No_Linea<=5:
+                    Nueva=linea.replace("\n","")
+                    Datos.append(Nueva)
+                    continue
+                else:
+                    
+                    if linea!="\n":
+                        Transi=Transi+linea.replace(";",",")
+
+                    else:
+                        Datos.append(Transi.replace("\n",";"))
+                        Tran=Datos[5]
+                        
+
+                        AFDArchivo(Datos[0],Datos[1],Datos[2],Datos[3],Datos[4],Tran.rstrip(Tran[-1]))
+                        Datos.clear()
+                        No_Linea=0
+                        Transi=""
+
+class VentanaArchivoGR(Toplevel):
+    Lista_AutomataGR=ListarGR()
+    def __init__(self,master=None):
+        super().__init__(master=master)
+        
+        self.title("CARGAR ARCHIVO GR")
+        self.geometry("500x500")
+        inicio=Label(self,text="CARGAR ARCHIVO GR")
+        inicio.pack()
+        Frame_AFD2=Frame(self)
+        Frame_AFD2.pack()  
+
+        Boton_Cargar_AFD=Button(Frame_AFD2,text="Buscar Archivo",command=lambda:self.AbrirArchivo())
+        Boton_Cargar_AFD.pack()
+        self.label_file_explorer = Label(Frame_AFD2, text = "GRAMATICAS REGULARES", width = 100, height = 4, fg = "blue") 
+        self.label_file_explorer.pack() 
+
+    def AbrirArchivo(self):
+        
+        filename = filedialog.askopenfilename(initialdir = "/", 
+                                          title = "Select a File", 
+                                          filetypes = (("Text files", 
+                                                        "*.gre*"), 
+                                                       ("all files", 
+                                                        "*.*"))) 
+        self.label_file_explorer.configure(text="File Opened:\n "+filename) 
+        Datos=[]
+        with open(filename) as archivo:
+            No_Linea=0
+            Transi=""
+            for linea in archivo:
+                No_Linea+=1
+                
+                if No_Linea<=4:
+                    Nueva=linea.replace("\n","")
+                    Datos.append(Nueva)
+                    continue
+                else:
+                    
+                    if linea!="\n":
+                        Transi=Transi+linea.replace("\n",";")
+
+                    else:
+                        Datos.append(Transi)
+                        Tran=Datos[4]
+                        GR_Archivo(Datos[0],Datos[1],Datos[2],Datos[3],Tran.rstrip(Tran[-1]))
+                        Datos.clear()
+                        No_Linea=0
+                        Transi=""
+
+        
+
+                     
+
+
+    
+    
+
+
 
 ventana=Tk()
 
@@ -236,8 +350,10 @@ notebook.pack(fill="both",expand="yes")
 
 pes0=ttk.Frame(notebook)
 pes1=ttk.Frame(notebook)
+pes2=ttk.Frame(notebook)
 notebook.add(pes0,text="Modulo AFD")
 notebook.add(pes1,text="Modulo GR")
+notebook.add(pes2,text="Modulo Cargar Archivo")
 Label(pes0,text="PROYECTO 1 LFP")
 
 Boton=Button(pes0,text="CREAR AFD",bg="white",width=15,height=5,font="Poppins")
@@ -258,7 +374,13 @@ Boton5.grid(row=2,column=1,padx=5,pady=10)
 Boton6=Button(pes1,text="GENERAR REPORTE GR",bg="white",width=25,height=5,font="Poppins",command=lambda:VentanaGR_Reporte(pes1))
 Boton6.grid(row=2,column=3,padx=5,pady=10)
 
+Boton7=Button(pes2,text="CARGAR AFD",bg="white",width=15,height=5,font="Poppins")
+Boton7.bind("<Button>",lambda e:VentanaArchivoAFD(pes1))
+Boton7.grid(row=2,column=0,padx=5,pady=10)
 
+Boton8=Button(pes2,text="CARGAR GR",bg="white",width=15,height=5,font="Poppins")
+Boton8.bind("<Button>",lambda e:VentanaArchivoGR(pes1))
+Boton8.grid(row=2,column=1,padx=5,pady=10)
 
 ventana.mainloop()
 
