@@ -18,10 +18,11 @@ def AFD(nombre,estados,alfa,estado_ini,estados_aceptacion,transiciones):
     estado_inicial=estado_ini
     
 
-    estados_ = estados.split(",") 
+    estados_ = estados.split(";") 
     alfabeto_ = alfabeto.split(",")
-    estados_aceptacion_ = estados_aceptacion.split(",")
-    transiciones_ = transiciones.split(";") 
+    estados_aceptacion_ = estados_aceptacion.split(";")
+    transi=transiciones.replace(" ","")
+    transiciones_ = transi.split(";") 
 
     if(not estado_inicial in estados_ and not estados_aceptacion_ in estados_):
         messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
@@ -61,7 +62,8 @@ def AFDArchivo(nombre,estados,alfa,estado_ini,estados_aceptacion,transiciones):
     estados_ = estados.split(",") 
     alfabeto_ = alfabeto.split(",")
     estados_aceptacion_ = estados_aceptacion.split(",")
-    transiciones_ = transiciones.split(";") 
+    transi=transiciones.replace(" ","")
+    transiciones_ = transi.split(";") 
 
     if(not estado_inicial in estados_ and not estados_aceptacion_ in estados_):
         messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");

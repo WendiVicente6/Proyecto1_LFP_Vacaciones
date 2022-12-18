@@ -91,11 +91,14 @@ class VentanaAFD_Cadena(Toplevel):
         txtcadena=Entry(Frame_AFD2,textvariable=cadena)
         txtcadena.grid(row=8,column=2)
 
+        Boton_AFD_Ayuda=Button(Frame_AFD2,text="Ayuda(Ver Grafo)",command=lambda:GrafoAFD(combo.get()))
+        Boton_AFD_Ayuda.grid(row=9,column=2)
+
         Boton_AFD=Button(Frame_AFD2,text="Validar Cadena",command=lambda:Cadena(cadena.get(),combo.get()))
-        Boton_AFD.grid(row=9,column=2) 
+        Boton_AFD.grid(row=10,column=2) 
 
         Boton_AFD=Button(Frame_AFD2,text="Mostrar Ruta",command=lambda:CadenaRuta(cadena.get(),combo.get()))
-        Boton_AFD.grid(row=10,column=2) 
+        Boton_AFD.grid(row=11,column=2) 
 
 class VentanaAFD_Reporte(Toplevel):
     Lista_Automata=Listar()
@@ -200,11 +203,14 @@ class VentanaGR_Cadena(Toplevel):
         txtcadena=Entry(Frame_AFD2,textvariable=cadena)
         txtcadena.grid(row=8,column=2)
 
+        Boton_GR_AYUDA=Button(Frame_AFD2,text="Ayuda (Ver Grafo)",command=lambda:GrafoGR(combo.get()))
+        Boton_GR_AYUDA.grid(row=9,column=2)
+
         Boton_AFD=Button(Frame_AFD2,text="Validar Cadena",command=lambda:CadenaGR(cadena.get(),combo.get()))
-        Boton_AFD.grid(row=9,column=2) 
+        Boton_AFD.grid(row=10,column=2) 
 
         Boton_AFD=Button(Frame_AFD2,text="Mostrar Ruta",command=lambda:CadenaRutaGR(cadena.get(),combo.get()))
-        Boton_AFD.grid(row=10,column=2) 
+        Boton_AFD.grid(row=11,column=2) 
 
 class VentanaGR_Reporte(Toplevel):
     Lista_AutomataGR=ListarGR()
@@ -247,12 +253,7 @@ class VentanaArchivoAFD(Toplevel):
 
     def AbrirArchivo(self):
         
-        filename = filedialog.askopenfilename(initialdir = "/", 
-                                          title = "Select a File", 
-                                          filetypes = (("Text files", 
-                                                        "*.afd*"), 
-                                                       ("all files", 
-                                                        "*.*"))) 
+        filename = filedialog.askopenfilename(initialdir = "/", title = "Select a File", filetypes = (("Text files",  "*.afd*"), ("all files", "*.*"))) 
         self.label_file_explorer.configure(text="File Opened:\n "+filename) 
         Datos=[]
         with open(filename) as archivo:
@@ -267,7 +268,7 @@ class VentanaArchivoAFD(Toplevel):
                     continue
                 else:
                     
-                    if linea!="\n":
+                    if linea!="%\n" and linea!="\n":
                         Transi=Transi+linea.replace(";",",")
 
                     else:
@@ -319,7 +320,7 @@ class VentanaArchivoGR(Toplevel):
                     continue
                 else:
                     
-                    if linea!="\n":
+                    if linea!="%\n" and linea!="\n":
                         Transi=Transi+linea.replace("\n",";")
 
                     else:
@@ -344,6 +345,8 @@ ventana=Tk()
 
 ventana.title("Proyecto 1")
 ventana.geometry("700x200")
+Datos=Label(text="Wendi Paulina Vicente Pérez"+"\n"+" Carnet: 202106484")
+Datos.pack()
 
 notebook=ttk.Notebook(ventana)
 notebook.pack(fill="both",expand="yes")

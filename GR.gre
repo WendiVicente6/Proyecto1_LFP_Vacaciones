@@ -2,7 +2,7 @@ GR_1
 A,B,C,D
 0,1
 A
-A>0B
+A> 0 B
 A>1C
 B>0A
 B>1D
@@ -11,7 +11,7 @@ C>1A
 C>$
 D>0C
 D>1B
-
+%
 GR_2
 A,B,C,D
 0,1
@@ -23,7 +23,7 @@ B>1D
 C>0D
 C>1A
 C>$
-
+%
 GR_3
 A,B,C,D
 0,1

@@ -14,7 +14,8 @@ def GR(nombre,NoTer,Termi,Ntinicial,produ):
 
     NoTerminales = NoTer.split(";") 
     Terminales = Termi.split(";")
-    producciones = produ.split(";") 
+    transi=produ.replace(" ","")
+    producciones = transi.split(";") 
 
     if(not Ntinicial in NoTerminales):
         messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
@@ -58,7 +59,8 @@ def GR_Archivo(nombre,NoTer,Termi,Ntinicial,produ):
 
     NoTerminales = NoTer.split(",") 
     Terminales = Termi.split(",")
-    producciones = produ.split(";") 
+    transi=produ.replace(" ","")
+    producciones = transi.split(";") 
 
     if(not Ntinicial in NoTerminales):
         messagebox.showinfo("Error de archivo","VERIFICAR QUE EL ESTADO INICIAL O ESTADO DE ACEPTACION ESTÉ EN EL CONJUNTO DE ESTADOS");
