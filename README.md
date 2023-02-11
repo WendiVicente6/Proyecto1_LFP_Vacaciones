@@ -24,4 +24,6 @@ El programa podrá empezar tanto por la creación de una gramática, para genera
 AFD, así como por la creación de un AFD, y generar su gramática correspondiente. La
 notación para AFD y GR será detallado más adelante, recordad que debe de incluir todos los
 elementos de estos para cuando realice los reportes.
+
+### Enunciado del proyecto 
 [LFP_Enunciado_Primer_Proyecto.pdf](https://github.com/WendiVicente6/P1_202106484/files/10714768/LFP_Enunciado_Primer_Proyecto.pdf)
